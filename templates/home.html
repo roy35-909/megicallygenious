@@ -1,0 +1,688 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apollo Scraper 😎</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .section-header {
+      background: linear-gradient(to right, #e3f6ff, #f3f9ff);
+      background-image: url('{% static "images/saas1-scaled-1.webp" %}');
+      background-size: cover;
+      background-position: center;
+      color: #000;
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .happy-clients-section {
+      background: #FFFFFFFF;
+      padding: 80px 0;
+    }
+
+    .client-images-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+    }
+
+    .client-images-container .col-md-4 {
+      flex: 1;
+    }
+
+    .client-image {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .client-image img {
+      width: 100%;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .client-image:hover img {
+      transform: scale(1.1);
+    }
+    
+    .section_faq2 {
+      padding: 40px 0;
+    }
+    .section_faq2 h2 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .faq2_question {
+      cursor: pointer;
+      background-color: #f2f2f2;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .faq2_question:hover {
+      background-color: #e0e0e0;
+    }
+    .faq2_question.active {
+      background-color: #007bff;
+      color: #fff;
+    }
+    .faq2_question.active:hover {
+      background-color: #0056b3;
+    }
+    .faq2_question.active .faq2_icon svg {
+      fill: #fff;
+    }
+    .faq2_icon {
+      float: right;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .faq2_answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .faq2_answer p {
+      margin-bottom: 0;
+    }
+    .faq2_answer.active {
+      max-height: 1000px; /* Adjust this value as needed */
+      margin-bottom: 25px; /* Adjust this value as needed */
+    }
+  </style>
+</head>
+
+<body>
+  <section class="section-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <span class="badge badge-update text-primary" style="background-color: #bfc7f29a; margin-top: 10px;">Get leads
+            the fastest way possible</span>
+          <div class="text-center m-4">
+            <h1>Get leads from <span class="highlighted-text">Apollo</span> in an affordable and fast way.</h1>
+          </div>
+          <a class="btn btn-primary btn-lg mt-3" href="#scraper">
+            Pay as you go <i class="fas fa-arrow-right ml-2"></i>
+          </a>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-10 offset-md-1">
+          <div class="video-container">
+            <iframe src="https://www.loom.com/embed/e9e63cdd3b7a4e68b188cabfbbaefa09" frameborder="0"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="happy-clients-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Happy Clients</h2>
+          <p>What our clients say about our services....</p>
+          <div class="client-images-container">
+            <div class="col-md-4">
+              <div class="client-image">
+                <img src="{% static 'images/Screenshot_34.png' %}" alt="Client 2">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="client-image">
+                <img src="{% static 'images/Screenshot_33.png' %}" alt="Client 1">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="client-image">
+                <img src="{% static 'images/Screenshot_35.png' %}" alt="Client 3">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scraper-section">
+    <div class="container">
+      <h1>Apollo Scraper 😎</h1>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <p class="text-muted text-center col-md-6 text-bold">All we need is just an Apollo Search URL and the number of
+          leads you want to extract, and it will be sent directly to your inbox.</p>
+      </div>
+      <form id="scraper-form" class="mt-5" novalidate>
+        {% csrf_token %}
+        <div class="form-group text-left">
+          <label for="url">Apollo Search URL</label>
+          <input type="url" class="form-control" name="url" id="url" required
+            placeholder="E.g. https://app.apollo.io/#/people?">
+          <div class="invalid-feedback">Please enter a valid URL.</div>
+        </div>
+        <div class="form-group text-left">
+          <label for="leads">Leads</label>
+          <select class="form-control" name="leads" id="leads" required>
+            <option value="" disabled selected>Select the number of leads</option>
+          </select>
+          <div class="invalid-feedback">Please select the number of leads.</div>
+        </div>
+        <div class="form-group text-left">
+          <label>Total Bill</label>
+          <input type="text" class="form-control" name="total_bill" id="total_bill" readonly value="$0">
+        </div>
+        <button type="submit" class="btn btn-primary mt-4 mb-5" id="next-btn">Next ⏭️</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="information-section" style="display: none;">
+    <div class="container">
+      <form id="payment-form" novalidate>
+        {% csrf_token %}
+        <div class="form-group text-left">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" name="name" id="name" required>
+          <div class="invalid-feedback">Please enter your name.</div>
+        </div>
+        <div class="form-group text-left">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" name="email" id="email" required>
+          <div class="invalid-feedback">Please enter a valid email address.</div>
+        </div>
+        <div class="form-group text-left">
+          <label for="street_address">Street Address</label>
+          <input type="text" class="form-control" name="street_address" id="street_address" required>
+          <div class="invalid-feedback">Please enter your street address.</div>
+        </div>
+        <div class="form-group text-left">
+          <label for="zip">Zip Code</label>
+          <input type="text" class="form-control" name="zip" id="zip" required>
+          <div class="invalid-feedback">Please enter your zip code.</div>
+        </div>
+        <div class="form-group text-left">
+          <label for="city">City</label>
+          <input type="text" class="form-control" name="city" id="city" required>
+          <div class="invalid-feedback">Please enter your city.</div>
+        </div>
+        <div class="form-group text-left">
+          <label for="country">Country</label>
+          <select class="form-control" name="country" id="country" required>
+            <option value="">Select Country</option>
+          </select>
+          <div class="invalid-feedback">Please enter your country.</div>
+        </div>
+        <div class="form-group">
+          <label for="payment">Payment Details</label>
+          <div id="card-element" class="mt-5">
+          </div>
+          <div id="card-errors" role="alert"></div>
+        </div>
+        <div class="mt-4 mb-5">
+          <button type="button" class="btn btn-primary" id="prev-btn">⏮️ Previous</button>
+          <button type="submit" class="btn btn-aquamarine ml-3">Get Data</button>
+        </div>
+
+        <!-- Additional hidden fields for leads and total_bill -->
+        <input type="hidden" name="leads" id="leadsHidden">
+        <input type="hidden" name="total_bill" id="totalBillHidden">
+      </form>
+    </div>
+  </section>
+
+
+  <section class="happy-clients-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Our Valuable Clients</h2>
+          <p>What our clients say about our services....</p>
+          <div class="client-images-container">
+            <div class="col-md-3">
+              <img src="{% static 'images/client1.jpg' %}" alt="Client 1">
+            </div>
+            <div class="col-md-3">
+              <img src="{% static 'images/client2.jpg' %}" alt="Client 2">
+            </div>
+            <div class="col-md-3">
+              <img src="{% static 'images/client3.jpg' %}" alt="Client 2">
+            </div>
+            <div class="col-md-3">
+              <img src="{% static 'images/Screenshot_36.png' %}" alt="Client 3">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="client-images-container">
+            <div class="col-md-3">
+              <img src="{% static 'images/Screenshot_37.png' %}" alt="Client 3">
+            </div>
+            <div class="col-md-3">
+              <img src="{% static 'images/Screenshot_39.png' %}" alt="Client 3">
+            </div>
+            <div class="col-md-3">
+              <img src="{% static 'images/Screenshot_40.png' %}" alt="Client 3">
+            </div>
+            <div class="col-md-3">
+              <img src="{% static 'images/Screenshot_41.jpeg' %}" alt="Client 3">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Price Plan section -->
+  <section class="price-plan-section">
+    <div class="container">
+      <h1>Price Plans</h1>
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h3>EXPORT</h3>
+            </div>
+            <div class="card-body">
+              <h2>$299</h2>
+              <p>APOLLO EXPORT</p>
+              <p>100k Apollo Leads</p>
+              <p>No duplicate Email</p>
+              <p>jon@company.com type emails</p>
+              <p>2-3 Day Delivery</p>
+              <p>24/7 Support</p>
+              <a href="#scraper" class="btn btn-primary">BUY NOW</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h3>EXPORT</h3>
+            </div>
+            <div class="card-body">
+              <h2>$599</h2>
+              <p>APOLLO EXPORT</p>
+              <p>500k Apollo Leads</p>
+              <p>No duplicate Email</p>
+              <p>jon@company.com type emails</p>
+              <p>2-3 Day Delivery</p>
+              <p>24/7 Support</p>
+              <a href="#scraper" class="btn btn-primary">BUY NOW</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <h3>EXPORT</h3>
+            </div>
+            <div class="card-body">
+              <h2>$1199</h2>
+              <p>APOLLO EXPORT</p>
+              <p>1M Apollo Leads</p>
+              <p>No duplicate Email</p>
+              <p>jon@company.com type emails</p>
+              <p>2-3 Day Delivery</p>
+              <p>24/7 Support</p>
+              <a href="#scraper" class="btn btn-primary">BUY NOW</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+    <!-- Section Layout 121 -->
+    <section class="section_layout121 bg-light">
+      <div class="container">
+        <div class="row">
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <h2 class="heading skew-up">How to <span class="text-purple">get started.</span></h2>
+            <div class="my-3">
+              <a href="/form" class="btn btn-primary">GET YOUR LEADS</a>
+            </div>
+          </div>
+          <!-- Right Column -->
+          <div class="col-md-6">
+            <!-- Timeline Section -->
+            <div class="layout121_timeline-wrapper">
+              <div class="layout121_progress-bar-wrapper">
+                <div class="layout121_progress-bar"></div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="layout121_timeline-icon-wrapper">
+                    <svg class="iconify iconify--fe" data-icon="bi:file-earmark-text" width="100%" height="100%" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M5 4.5A1.5 1.5 0 0 0 3.5 6h2a.5.5 0 0 1 .5.5v3.5a1.5 1.5 0 0 0 3 0V6.5a.5.5 0 0 1 .5-.5h2A1.5 1.5 0 0 0 12 4.5V1H5v3.5z"/>
+                      <path d="M11 7H4a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zm0 1v5H4V8h7z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="layout121_text-wrapper">
+                    <div class="my-2"><h3>Submit the form</h3></div>
+                    <p>Click the "Get your leads" button and start filling out the necessary info to ensure we have everything ready to send.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="layout121_timeline-icon-wrapper">
+                    <svg class="iconify iconify--fe" data-icon="bi:clock-history" width="100%" height="100%" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 1a7 7 0 1 0 7 7A7 7 0 0 0 8 1zm0 13a6 6 0 1 1 6-6a6 6 0 0 1-6 6zm1-6a.5.5 0 0 0-.5.5V9a.5.5 0 0 0 1 0V8.5a.5.5 0 0 0-.5-.5zm.527-2.013a.5.5 0 0 0-.932-.366l-.55 1.658a.5.5 0 0 0 .183.642l1.896 1.316a.5.5 0 0 0 .732-.524L9.527 6.987z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="layout121_text-wrapper">
+                    <div class="my-2"><h3>Wait up to 5 minutes</h3></div>
+                    <p>Once you've purchased a set of contacts, we'll need about 5 minutes to send them over to your email.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="layout121_timeline-icon-wrapper">
+                    <svg class="iconify iconify--fe" data-icon="bi:envelope-open" width="100%" height="100%" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M12 1a2 2 0 0 0-2 2v1H6V3a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zM5.5 5.5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5zM6 6a1 1 0 1 0-1 1a1 1 0 0 0 1-1zm5.5 0a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 .5-.5zm1.104 1.865a.5.5 0 1 0-.708.708l2.828 2.828a.5.5 0 0 0 .708 0l2.828-2.828a.5.5 0 0 0-.708-.708L13 9.793l-1.646-1.646z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="layout121_text-wrapper">
+                    <div class="my-2"><h3>Boom! Get an email of your leads</h3></div>
+                    <p>Now that you have them, you're free to start your outbound campaigns!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Supercharge Your Leads with Export Apollo -->
+<section class="section_cta25 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2 class="skew-up">Supercharge <span class="text-purple">Your Leads</span> with Export Apollo</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p class="text-size-medium">Unlock the power of effective lead scraping with Export Apollo. For as low as <span class="text-purple">$15.99</span>, bid farewell to the need for Chrome extensions and the cost of hourly VAs, and embrace speedy, efficient data extraction.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center my-3">
+        <a href="/form" class="btn btn-primary btn-lg">GET YOUR LEADS</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section_faq2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2 class="skew-up">FAQs</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <!-- FAQ Accordion -->
+        <div class="faq2_accordion">
+          <!-- FAQ 1 -->
+          <div class="faq2_question">
+            <div class="text-size-medium text-weight-bold">How does it work?</div>
+            <div class="faq2_icon">
+              <!-- Add your FAQ icon here (SVG or any other icon format) -->
+              <svg class="iconify iconify--fe" data-icon="bi:file-earmark-text" width="100%" height="100%" fill="currentColor" viewBox="0 0 16 16">
+                <!-- SVG Path for Icon -->
+              </svg>
+            </div>
+          </div>
+          <div class="faq2_answer">
+            <p>Answer to FAQ 1 goes here.</p>
+          </div>
+
+          <!-- Add more FAQs and answers here as needed -->
+          <!-- FAQ 2 -->
+          <div class="faq2_question">
+            <div class="text-size-medium text-weight-bold">Do I Need An Apollo Account?</div>
+            <div class="faq2_icon">
+              <!-- Add your FAQ icon here (SVG or any other icon format) -->
+              <svg class="iconify iconify--fe" data-icon="bi:file-earmark-text" width="100%" height="100%" fill="currentColor" viewBox="0 0 16 16">
+                <!-- SVG Path for Icon -->
+              </svg>
+            </div>
+          </div>
+          <div class="faq2_answer">
+            <p>Answer to FAQ 2 goes here.</p>
+          </div>
+
+          <!-- Add more FAQs and answers here as needed -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    function populateCountrySelect() {
+      const countrySelect = document.getElementById("country");
+      const apiUrl = "https://restcountries.com/v3.1/all";
+
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          const countries = data.map((countryData) => countryData.name.common);
+
+          countries.forEach((country) => {
+            const option = document.createElement("option");
+            option.value = country;
+            option.textContent = country;
+            countrySelect.appendChild(option);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching countries data:", error);
+        });
+    }
+
+    window.addEventListener("load", populateCountrySelect);
+  </script>
+
+  <script>
+    const leadsSelect = document.getElementById("leads");
+    const totalBillInput = document.getElementById("total_bill");
+    const nextBtn = document.getElementById("next-btn");
+    const prevBtn = document.getElementById("prev-btn");
+    const scraperForm = document.getElementById("scraper-form");
+    const informationSection = document.querySelector(".information-section");
+
+    const maxLeads = 50; // Change this value to set the maximum number of leads
+
+    // Generate dynamic options for the Leads field
+    for (let i = 1; i <= maxLeads; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = i + "K";
+      leadsSelect.appendChild(option);
+    }
+
+    leadsSelect.addEventListener("change", function () {
+      const leads = parseInt(this.value);
+      const totalBill = leads * 3;
+      totalBillInput.value = "$" + totalBill;
+    });
+
+    // nextBtn.addEventListener("click", function () {
+    //   // Hide the scraper form and show the information section
+    //   scraperForm.style.display = "none";
+    //   informationSection.style.display = "block";
+    // });
+
+    prevBtn.addEventListener("click", function () {
+      scraperForm.style.display = "block";
+      informationSection.style.display = "none";
+      resetFormValidation();
+    });
+  </script>
+
+  <script>
+    const stripe = Stripe('pk_test_51MMFduGpCeSCCFeR8LvxhqOADcfEPAZMgGuHZbLYF72HF6BRdr2H7y87Qb7E2Y3JubGLMYwhTRCuggjmiDFiBMip00ZlemJUwr');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card', {
+      hidePostalCode: true
+    });
+    cardElement.mount('#card-element');
+
+    // Handle Stripe Element validation errors
+    cardElement.on('change', function (event) {
+      const displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    const paymentForm = document.getElementById("payment-form");
+
+    scraperForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (scraperForm.checkValidity()) {
+        const scraperFormData = new FormData(scraperForm);
+        const url = scraperFormData.get("url");
+        const leads_get = scraperFormData.get("leads");
+
+        const leadsWithoutK = leads_get.replace('K', '');
+
+        const leads = parseInt(leadsWithoutK, 10);
+
+
+        // Store the form data in local storage
+        localStorage.setItem("url", url);
+        localStorage.setItem("leads", leads);
+
+        // Hide the scraper form and show the payment form
+        scraperForm.style.display = "none";
+        informationSection.style.display = "block";
+
+        // Set the leads and total_bill values in the information form
+        leadsHidden.value = leads;
+        const totalBill = parseInt(leads) * 3; // Assuming $3 per lead
+        totalBillHidden.value = "$" + totalBill.toFixed(2); // Format as currency
+      } else {
+        scraperForm.classList.add("was-validated");
+      }
+    });
+
+    const zipInput = document.getElementById("zip");
+    paymentForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      if (paymentForm.checkValidity()) {
+        const paymentFormData = new FormData(paymentForm);
+        const name = paymentFormData.get("name");
+        const email = paymentFormData.get("email");
+
+        const zip = zipInput.value;
+        paymentFormData.set("zip", zip);
+
+
+        const url = localStorage.getItem("url");
+        const leads = localStorage.getItem("leads");
+
+        paymentFormData.set("url", url);
+        paymentFormData.set("leads", leads);
+
+        const { token, error } = await stripe.createToken(cardElement);
+
+        if (error) {
+          const errorElement = document.getElementById('card-errors');
+          errorElement.textContent = error.message;
+          return;
+        }
+
+        paymentFormData.set('stripeToken', token.id);
+
+        try {
+          const response = await fetch('', {
+            method: 'POST',
+            body: paymentFormData
+          });
+          if (response.ok) {
+            window.location.href = '/success-page/';
+          } else {
+            console.log('Error:', response.statusText);
+          }
+        } catch (error) {
+          console.log('Error:', error);
+        }
+      } else {
+        paymentForm.classList.add("was-validated");
+      }
+    });
+  </script>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    // JavaScript function to handle FAQ accordion
+    document.addEventListener('DOMContentLoaded', function() {
+      const faqQuestions = document.querySelectorAll('.faq2_question');
+      
+      faqQuestions.forEach((question) => {
+        question.addEventListener('click', function() {
+          this.classList.toggle('active');
+          const answer = this.nextElementSibling;
+          if (this.classList.contains('active')) {
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+          } else {
+            answer.style.maxHeight = 0;
+          }
+        });
+  
+        // Hide answers initially
+        const answer = question.nextElementSibling;
+        answer.style.maxHeight = 0;
+      });
+    });
+  </script>
+</body>
+
+</html>

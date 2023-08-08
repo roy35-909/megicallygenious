@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apollo Scrapper</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Apollo Scrapper</h1>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="email">Enter your email:</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="url">Enter the URL:</label>
+                <input type="text" class="form-control" name="url" required>
+            </div>
+            <div class="form-group">
+                <label for="needed_data">Enter the number of data needed:</label>
+                <input type="number" class="form-control" name="needed_data" id="needed_data" required>
+            </div>
+            <div class="form-group">
+                <label for="total_bill">Total Bill:</label>
+                <input type="text" class="form-control" name="total_bill" id="total_bill" readonly>
+            </div>
+
+            <div id="card-element" class="mt-5">
+                <!-- A Stripe Element will be inserted here. -->
+            </div>
+            <!-- Used to display form errors. -->
+            <div id="card-errors" role="alert"></div>
+            <button type="submit" class="btn btn-primary mt-5">Get Data</button>
+
+        </form>
+    </div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe('pk_test_51MMFduGpCeSCCFeR8LvxhqOADcfEPAZMgGuHZbLYF72HF6BRdr2H7y87Qb7E2Y3JubGLMYwhTRCuggjmiDFiBMip00ZlemJUwr');
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    // Handle Stripe Element validation errors
+    cardElement.on('change', function(event) {
+      const displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    document.querySelector('form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        
+        // Extract the numeric value from the total_bill field and remove the dollar sign
+        formData.set('total_bill', formData.get('total_bill').replace('$', ''));
+        
+        // Create a Stripe token from the card information
+        const { token, error } = await stripe.createToken(cardElement);
+
+        if (error) {
+            // Handle Stripe Element validation errors
+            const errorElement = document.getElementById('card-errors');
+            errorElement.textContent = error.message;
+            return;
+        }
+        
+        // Append the Stripe token to the form data
+        formData.set('stripeToken', token.id);
+        
+        const response = await fetch('', {
+            method: 'POST',
+            body: formData
+        });
+        window.location.href = response.url;
+    });
+
+    const neededDataInput = document.getElementById('needed_data');
+    const totalBillInput = document.getElementById('total_bill');
+
+    neededDataInput.addEventListener('input', function () {
+        const neededData = parseInt(neededDataInput.value);
+        const costPer1000Data = 3;
+        const totalCost = (Math.ceil(neededData / 1000) * costPer1000Data).toFixed(2);
+        totalBillInput.value = `$${totalCost}`;
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
